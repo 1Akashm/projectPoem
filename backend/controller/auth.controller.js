@@ -2,6 +2,7 @@ const User = require("../model/auth.model");
 const bcrypt = require("bcrypt");
 const generateVerificationToken = require("../utils/generateVerificationToken");
 const generateTokenAndSetCookie = require("../utils/generateTokenAndSetCookie");
+const sendVerificationEmail = require("../utils/sendVerificationEmail");
 
 const signUpUser = async (req, res) => {
   try {
@@ -36,6 +37,9 @@ const signUpUser = async (req, res) => {
     });
     
     generateTokenAndSetCookie(res,newUser._id);
+
+    sendVerificationEmail(newUser.name,newUser.email,verificationToken)
+
     await newUser.save();
     
     return res.status(201).json({
