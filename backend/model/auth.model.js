@@ -14,14 +14,18 @@ const userSchema = new mongoose.Schema({
         required: true,
         type: String,
     },
-      ExpireAt: {
+    lastLogin:{
         type: Date,
-      },
+        default: Date.now
+    },
     isAccountVerified:{
         type: Boolean,
         default: false,
     },
-
+    resetPasswordToken: String,
+    resetPasswordExpiresAt: Date,
+    verificationToken: String,
+    verificationTokenExpiresAt: Date,
 },{
     timestamps:true
 });

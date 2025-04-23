@@ -1,5 +1,6 @@
 const User = require("../model/auth.model");
 const bcrypt = require("bcrypt");
+const generateVerificationToken = require("../utils/generateVerificationToken");
 
 const signUpUser = async (req, res) => {
   try {
@@ -12,8 +13,17 @@ const signUpUser = async (req, res) => {
       });
     }
 
+    const userAlreadyExists = await User.findOne({ email });
+    if (userAlreadyExists) {
+      return res.status(400).json({
+        status: "Failed",
+        message: "User already exists",
+      });
+    }
+
     const salt = 10;
     const hashedPassword = await bcrypt.hash(password, salt);
+    const verificationToken = generateVerificationToken();
 
     const newUser = new User({
       email,
