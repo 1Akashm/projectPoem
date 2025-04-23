@@ -38,7 +38,7 @@ const signUpUser = async (req, res) => {
     
     generateTokenAndSetCookie(res,newUser._id);
 
-    sendVerificationEmail(newUser.name,newUser.email,verificationToken)
+    await sendVerificationEmail(newUser.name,newUser.email,verificationToken)
 
     await newUser.save();
     
