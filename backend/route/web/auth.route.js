@@ -1,13 +1,14 @@
 const express = require("express");
-const signUpUser = require("../../controller/auth.controller");
+
+const {
+  signUpUser,
+  loginUser,
+  resetPassword
+} = require("../../controller/auth.controller");
+
 const route = express.Router();
 
-route.post("/login", (req, res) => {
-  res.status(201).send({
-    status: "success",
-    message: "login",
-  });
-});
+route.post("/login", loginUser);
 
 route.post("/signup", signUpUser);
 
@@ -17,5 +18,9 @@ route.post("/logout", (req, res) => {
     message: "logout",
   });
 });
+
+route.get("/email-verify", async (req, res) => {});
+
+route.post("/forgotPassword", resetPassword);
 
 module.exports = route;

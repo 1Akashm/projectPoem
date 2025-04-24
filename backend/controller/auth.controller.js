@@ -1,8 +1,14 @@
 const User = require("../model/auth.model");
+const crypto = require("crypto");
+require("dotenv").config();
+
 const bcrypt = require("bcrypt");
 const generateVerificationToken = require("../utils/generateVerificationToken");
 const generateTokenAndSetCookie = require("../utils/generateTokenAndSetCookie");
-const sendVerificationEmail = require("../utils/sendVerificationEmail");
+const {
+  sendVerificationEmail,
+  sendPasswordResetEmail,
+} = require("../utils/sendVerificationEmail");
 
 const signUpUser = async (req, res) => {
   try {
@@ -27,7 +33,6 @@ const signUpUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     const verificationToken = generateVerificationToken();
 
-    
     const newUser = new User({
       email,
       name,
@@ -35,19 +40,19 @@ const signUpUser = async (req, res) => {
       verificationToken,
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
     });
-    
-    generateTokenAndSetCookie(res,newUser._id);
 
-    await sendVerificationEmail(newUser.name,newUser.email,verificationToken)
+    generateTokenAndSetCookie(res, newUser._id);
+
+    await sendVerificationEmail(newUser.name, newUser.email, verificationToken);
 
     await newUser.save();
-    
+
     return res.status(201).json({
       status: "success",
       message: "Successfully signed up user",
-      newUser:{
+      newUser: {
         ...newUser._doc,
-        password: undefined
+        password: undefined,
       },
     });
   } catch (error) {
@@ -59,4 +64,88 @@ const signUpUser = async (req, res) => {
   }
 };
 
-module.exports = signUpUser;
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.json({
+        status: "Failed",
+        message: "Invalid credentials",
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.json({
+        status: "Failed",
+        message: "Invalid password",
+      });
+    }
+
+    generateTokenAndSetCookie(res, user._id);
+
+    user.lastLogin = new Date();
+    await user.save();
+
+    res.json({
+      status: "Success",
+      message: "Login successful",
+      user: {
+        ...user.toObject(), // this avoids Mongoose metadata issues
+        password: undefined,
+      },
+    });
+  } catch (error) {
+    console.error("Error in login:", error);
+    res.json({
+      status: "Failed",
+      message: error.message,
+    });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.json({
+        status: "Failed",
+        message: "Email doesn't exist to reset password",
+      });
+    }
+
+    //generate reset token
+    const resetToken = crypto.randomBytes(20).toString("hex");
+    const resetPasswordExpiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000);
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpiresAt = resetPasswordExpiresAt;
+
+    await user.save();
+
+    await sendPasswordResetEmail(
+      user.email,
+      `${process.env.CLIENT_URL}/forgotPassword/${resetToken}`
+    );
+
+    return res.json({
+      status: "success",
+      message: "reset password link sent to email",
+    });
+  } catch (error) {
+    console.log("Error in forgotPassword ", error);
+    res.json({
+      status: "Failed in forgot password",
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { signUpUser, loginUser, resetPassword };

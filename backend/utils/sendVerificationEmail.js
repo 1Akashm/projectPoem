@@ -1,5 +1,5 @@
 const {mailTrapClient,sender} = require("../mailtrap/mailtrap.config");
-const verificationEmailTemplate = require("./verificationEmailTemplate");
+const {verificationEmailTemplate, resetPasswordTemplate }= require("./verificationEmailTemplate");
 
 const sendVerificationEmail =async (user,email,verificationToken)=>
 {
@@ -21,4 +21,22 @@ const sendVerificationEmail =async (user,email,verificationToken)=>
     }
 }
 
-module.exports = sendVerificationEmail;
+const sendPasswordResetEmail = async (email,resetURL)=>
+{
+    const recipient = [{email}];
+    try {
+        const response =await mailTrapClient.send({
+            from: sender,
+            to: recipient,
+            subject: "Reset Password",
+            html: resetPasswordTemplate(resetURL),
+            category: "reset password"
+        })
+    } catch (error) {
+        console.log("Error in reset password," ,error);
+        throw new error("Error in reset password, ", error);
+    }
+}
+
+
+module.exports = {sendVerificationEmail,sendPasswordResetEmail};
