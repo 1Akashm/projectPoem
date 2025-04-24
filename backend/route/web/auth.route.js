@@ -3,6 +3,7 @@ const express = require("express");
 const {
   signUpUser,
   loginUser,
+  forgotPassword,
   resetPassword
 } = require("../../controller/auth.controller");
 
@@ -21,6 +22,7 @@ route.post("/logout", (req, res) => {
 
 route.get("/email-verify", async (req, res) => {});
 
-route.post("/forgotPassword", resetPassword);
+route.post("/forgotPassword", forgotPassword);
+route.post("/resetPassword/:token", resetPassword)
 
 module.exports = route;

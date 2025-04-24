@@ -8,6 +8,7 @@ const generateTokenAndSetCookie = require("../utils/generateTokenAndSetCookie");
 const {
   sendVerificationEmail,
   sendPasswordResetEmail,
+  sendResetSuccessful,
 } = require("../utils/sendVerificationEmail");
 
 const signUpUser = async (req, res) => {
@@ -108,7 +109,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-const resetPassword = async (req, res) => {
+const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -148,4 +149,52 @@ const resetPassword = async (req, res) => {
   }
 };
 
-module.exports = { signUpUser, loginUser, resetPassword };
+const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!password || password.trim().length < 6) {
+      return res.status(400).json({
+        status: "failed",
+        message: "Password is required and must be at least 6 characters long"
+      });
+    }
+
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpiresAt: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.json({
+        status: "false",
+        message: "invalid token or token has been expired",
+      });
+    }
+
+    //update password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpiresAt = undefined;
+
+    
+    res.json({
+      status: "success",
+      message: "reset successful",
+    });
+
+    await sendResetSuccessful(user.email);
+    await user.save();
+  } catch (error) {
+    console.log("error in reset password , ", error);
+    res.status(500).json({
+      status: "error",
+      message: "Internal server error",
+    });
+  }
+};
+
+module.exports = { signUpUser, loginUser, forgotPassword, resetPassword };

@@ -58,7 +58,7 @@ const verificationEmailTemplate = (user, verificationToken) => `
   </html>
 `;
 
-const resetPasswordTemplate =(resetURL)=>
+const resetPasswordTemplate = (resetURL) =>
   `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,7 +78,7 @@ const resetPasswordTemplate =(resetURL)=>
         <p style="font-size: 16px; color: #333;">You recently requested to reset your password. Use the code below to complete the process:</p>
         
         <div style="margin: 20px 0; padding: 15px; background-color: #f0f0f0; text-align: center; border-radius: 5px;">
-          <a href="${resetURL}" style="cursor:pointer; background: #ffcc88; color: #bbb7b8; padding: 10px; border-radius: 10px; text-decoration: none">Reset Password</a>
+          <a href="${resetURL}" style="cursor:pointer; background: #ffcc88; color: white; padding: 10px; border-radius: 10px; text-decoration: none">Reset Password</a>
         </div>
         
         <p style="font-size: 14px; color: #777;">This code will expire in 15 minutes. If you didn’t request a password reset, you can safely ignore this email.</p>
@@ -97,4 +97,91 @@ const resetPasswordTemplate =(resetURL)=>
 
 `;
 
-module.exports = {verificationEmailTemplate,resetPasswordTemplate};
+const resetSuccessfulTemplate = () =>
+  `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Password Reset Successful</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      background: #28a745;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+    }
+    .content {
+      padding: 30px;
+      text-align: center;
+    }
+    .message {
+      font-size: 16px;
+      color: #333;
+      line-height: 1.5;
+    }
+    .footer {
+      background: #f4f4f4;
+      text-align: center;
+      padding: 10px;
+      font-size: 12px;
+      color: #777;
+    }
+    .button {
+      display: inline-block;
+      background: #28a745;
+      color: white;
+      padding: 12px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    .button:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      Password Reset Successful
+    </div>
+    
+    <div class="content">
+      <p class="message">Hello,</p>
+      <p class="message">Your password has been successfully reset. If you did not initiate this change, please contact our support team immediately.</p>
+      <p class="message" style="margin-top: 20px;">If you didn’t request this, you can safely ignore this email.</p>
+    </div>
+
+    <div class="footer">
+      &copy; 2025 YourCompany. All rights reserved.
+    </div>
+  </div>
+
+</body>
+</html>
+
+`;
+
+module.exports = {
+  verificationEmailTemplate,
+  resetPasswordTemplate,
+  resetSuccessfulTemplate,
+};
