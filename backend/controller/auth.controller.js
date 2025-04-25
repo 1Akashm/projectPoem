@@ -9,6 +9,7 @@ const {
   sendVerificationEmail,
   sendPasswordResetEmail,
   sendResetSuccessful,
+  sendWelcomeEmail
 } = require("../utils/sendVerificationEmail");
 
 const signUpUser = async (req, res) => {
@@ -64,6 +65,46 @@ const signUpUser = async (req, res) => {
     });
   }
 };
+
+const verifyEmail = async(req,res)=>
+{
+  const {code} = req.body;
+
+  try {
+    const user = await User.findOne({
+      verificationToken: code,
+      verificationTokenExpiresAt:{$gt: Date.now()}
+    })
+
+    if(!user)
+    {
+      return res.json({
+        status: "Failed",
+        message: "verification failed"
+      })
+    }
+
+    user.isAccountVerified= true;
+
+    user.verificationToken= undefined;
+    user.verificationTokenExpiresAt= undefined;
+
+    await user.save();
+    await sendWelcomeEmail(user.email,user.name);
+
+    res.json({
+      status: "success",
+      message: "account verified successful"
+    })
+  } catch (error) {
+    res.json({
+      status: "Failed",
+      message: "failed to verify email"
+    })
+  }
+
+
+}
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -197,4 +238,4 @@ const resetPassword = async (req, res) => {
   }
 };
 
-module.exports = { signUpUser, loginUser, forgotPassword, resetPassword };
+module.exports = { signUpUser, loginUser, forgotPassword, resetPassword,verifyEmail };

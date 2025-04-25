@@ -4,7 +4,8 @@ const {
   signUpUser,
   loginUser,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  verifyEmail
 } = require("../../controller/auth.controller");
 
 const route = express.Router();
@@ -20,7 +21,7 @@ route.post("/logout", (req, res) => {
   });
 });
 
-route.get("/email-verify", async (req, res) => {});
+route.post("/verifyEmail", verifyEmail);
 
 route.post("/forgotPassword", forgotPassword);
 route.post("/resetPassword/:token", resetPassword)
