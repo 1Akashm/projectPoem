@@ -237,10 +237,20 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  res.clearCookie("token");
+  res.json({
+    status: "success",
+    message: "logout successful"
+  })
+};
+
+
 module.exports = {
   signUpUser,
   loginUser,
   forgotPassword,
   resetPassword,
   verifyEmail,
+  logout,
 };

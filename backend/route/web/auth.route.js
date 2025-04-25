@@ -5,7 +5,8 @@ const {
   loginUser,
   forgotPassword,
   resetPassword,
-  verifyEmail
+  verifyEmail,
+  logout
 } = require("../../controller/auth.controller");
 
 const route = express.Router();
@@ -14,12 +15,7 @@ route.post("/login", loginUser);
 
 route.post("/signup", signUpUser);
 
-route.post("/logout", (req, res) => {
-  res.status(200).send({
-    status: "success",
-    message: "logout",
-  });
-});
+route.post("/logout", logout);
 
 route.post("/verifyEmail", verifyEmail);
 
