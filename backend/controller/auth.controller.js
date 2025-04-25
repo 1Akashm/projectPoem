@@ -9,7 +9,7 @@ const {
   sendVerificationEmail,
   sendPasswordResetEmail,
   sendResetSuccessful,
-  sendWelcomeEmail
+  sendWelcomeEmail,
 } = require("../utils/sendVerificationEmail");
 
 const signUpUser = async (req, res) => {
@@ -66,45 +66,45 @@ const signUpUser = async (req, res) => {
   }
 };
 
-const verifyEmail = async(req,res)=>
-{
-  const {code} = req.body;
+const verifyEmail = async (req, res) => {
+  const { code } = req.body;
 
   try {
     const user = await User.findOne({
       verificationToken: code,
-      verificationTokenExpiresAt:{$gt: Date.now()}
-    })
+      verificationTokenExpiresAt: { $gt: Date.now() },
+    });
 
-    if(!user)
-    {
+    if (!user) {
       return res.json({
         status: "Failed",
-        message: "verification failed"
-      })
+        message: "verification failed",
+      });
     }
 
-    user.isAccountVerified= true;
+    user.isAccountVerified = true;
 
-    user.verificationToken= undefined;
-    user.verificationTokenExpiresAt= undefined;
+    user.verificationToken = undefined;
+    user.verificationTokenExpiresAt = undefined;
 
     await user.save();
-    await sendWelcomeEmail(user.email,user.name);
+    await sendWelcomeEmail(user.email, user.name);
 
     res.json({
       status: "success",
-      message: "account verified successful"
-    })
+      message: "account verified successful",
+      user: {
+        ...user._doc,
+        password: undefined,
+      },
+    });
   } catch (error) {
     res.json({
       status: "Failed",
-      message: "failed to verify email"
-    })
+      message: "failed to verify email",
+    });
   }
-
-
-}
+};
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -198,7 +198,7 @@ const resetPassword = async (req, res) => {
     if (!password || password.trim().length < 6) {
       return res.status(400).json({
         status: "failed",
-        message: "Password is required and must be at least 6 characters long"
+        message: "Password is required and must be at least 6 characters long",
       });
     }
 
@@ -221,7 +221,6 @@ const resetPassword = async (req, res) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpiresAt = undefined;
 
-    
     res.json({
       status: "success",
       message: "reset successful",
@@ -238,4 +237,10 @@ const resetPassword = async (req, res) => {
   }
 };
 
-module.exports = { signUpUser, loginUser, forgotPassword, resetPassword,verifyEmail };
+module.exports = {
+  signUpUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+  verifyEmail,
+};
