@@ -238,7 +238,12 @@ const resetPassword = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  }
+  );
   res.json({
     status: "success",
     message: "logout successful"
