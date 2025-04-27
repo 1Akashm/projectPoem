@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FormContainer from "./components/rootPath/FormContainer";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
 import Layout from "./components/Layout";
@@ -9,9 +13,9 @@ import Home from "./components/rootPath/Home";
 import Navbar from "./components/navbar/Navbar";
 
 const App = () => {
+
   return (
     <Router>
-      <Navbar/>
       <ToastContainer
         position="bottom-right"
         draggable
@@ -30,9 +34,10 @@ const App = () => {
         }
         style={{ bottom: "10%" }}
       />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="/home" element={<Home/>}/>
+          <Route path="/home" element={<Home />} />
           <Route index element={<FormContainer />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
