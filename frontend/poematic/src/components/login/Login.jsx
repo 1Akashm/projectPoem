@@ -1,0 +1,96 @@
+import React, { useState } from "react";
+import FadeInOut from "../animationLoadOnEachRoute/FadeInOut";
+import { Link } from "react-router-dom";
+import Input from "../signup/Input";
+import { PasswordCriteria, PasswordMeter } from "../passwordMeter";
+import { Eye, EyeOff, LockKeyhole, Mail, Loader } from "lucide-react";
+import Circle from "../rootPath/Circle";
+
+const Login = () => {
+  const [showPassword, setEyePassword] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  function setUpLoader() {
+    setLoading(true);
+  }
+
+  function togglePasswordVisibility() {
+    setEyePassword((prev) => !prev);
+  }
+  return (
+    <React.Fragment>
+      <FadeInOut title="Login To">
+        <div className="w-full h-dvh flex items-center justify-center">
+          <div className="w-full max-w-3xl h-fit p-4 pb-1  bg-slate-100  backdrop-blur-sm backdrop-filter rounded-3xl shadow-xl drop-shadow-2xl relative">
+            <form method="post">
+              <Input
+                icons={Mail}
+                type="text"
+                placeholder="email"
+                name="email"
+                // value={formData.email}
+                // onChange={handleChange}
+              />
+
+              <div className="relative">
+                <Input
+                  icons={LockKeyhole}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="password"
+                  name="password"
+                  // value={formData.password}
+                  // onChange={handleChange}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="text-green-300 absolute right-8 top-1/2 transform -translate-y-1/2 cursor-pointer "
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+
+              <div className="relative w-full flex justify-center">
+                <button
+                  // type="submit"
+                  onClick={setUpLoader}
+                  className="overflow-clip pointer p-1 w-full max-w-2/4 bg-green-200 cursor-pointer border-transparent border-2 hover:border-green-200 hover:border-2 hover:bg-transparent transition duration-400 text-2xl font-light text-green-400"
+                >
+                  {loading ? (
+                    <Loader className="w-full animate-spin text-center" />
+                  ) : (
+                    <Link to="/home">Login</Link>
+                  )}
+                </button>
+              </div>
+            </form>
+            <div className=" m-12 flex flex-col gap-5 justify-center items-center">
+              <Link
+                to="/forgotPassword"
+                className="w-fit p-2 bg-slate-200 backdrop-blur-sm backdrop-filter rounded-2xl shadow-xl drop-shadow-xl hover:bg-gradient-to-r hover:from-slate-200 hover:to-slate-400 transition duration-300"
+              >
+                Forgot password
+              </Link>
+              <Link
+                to="/signup"
+                className="w-fit pointer-events-none flex gap-2"
+              >
+                <span className="w-fit">Don't Have account yet? </span>
+                <span className="w-fit pointer-events-auto hover:text-green-900 hover:underline">
+                  Signup
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <Circle width="5rem" height="5rem" top="30%" left="0%" delay="0" />
+        <Circle width="8rem" height="8rem" top="20%" left="90%" delay="4" />
+        <Circle width="12rem" height="12rem" top="60%" left="40%" delay="6" />
+      </FadeInOut>
+    </React.Fragment>
+  );
+};
+
+export default Login;

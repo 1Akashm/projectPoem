@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+:root {
+  --color-code-1: linear-gradient(
+    120deg,
+    #ffe3f1 0%,
+    #c890a7 30%,
+    #7c4585 100%
+  );
+  --color-code-2: #c890a7;
+  --color-code-3: #f5ece0;
+  --color-code-4: #a35c7a;
+  --color-code-5: #b1c29e;
+  --color-code-6: #fce7c8;
+}
+

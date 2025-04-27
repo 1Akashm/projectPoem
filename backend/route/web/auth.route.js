@@ -6,10 +6,16 @@ const {
   forgotPassword,
   resetPassword,
   verifyEmail,
-  logout
+  logout,
+  checkAuth
 } = require("../../controller/auth.controller");
 
+
+const verifyToken = require("../../middleware/verifyToke");
+
 const route = express.Router();
+
+route.get("/checkAuth",verifyToken,checkAuth);
 
 route.post("/login", loginUser);
 

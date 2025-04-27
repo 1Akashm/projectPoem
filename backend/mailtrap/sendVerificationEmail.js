@@ -1,4 +1,4 @@
-const { mailTrapClient, sender } = require("../mailtrap/mailtrap.config");
+const { mailTrapClient, sender } = require("./mailtrap.config");
 const {
   verificationEmailTemplate,
   resetPasswordTemplate,
@@ -30,11 +30,10 @@ const sendWelcomeEmail = async (email, name) => {
       to: recipient,
       template_uuid: "29c8d213-ff96-42aa-a6b3-0e96e0a2b4ea",
       template_variables: {
-        "company_name": "Poematic",
-        "name": name
+        company_name: "Poematic",
+        name: name,
       },
     });
-
   } catch (error) {
     throw new error("Welcome email error, ", error);
   }

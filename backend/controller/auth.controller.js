@@ -10,7 +10,7 @@ const {
   sendPasswordResetEmail,
   sendResetSuccessful,
   sendWelcomeEmail,
-} = require("../utils/sendVerificationEmail");
+} = require("../mailtrap/sendVerificationEmail");
 
 const signUpUser = async (req, res) => {
   try {
@@ -170,13 +170,12 @@ const forgotPassword = async (req, res) => {
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpiresAt = resetPasswordExpiresAt;
 
-    await user.save();
-
     await sendPasswordResetEmail(
       user.email,
       `${process.env.CLIENT_URL}/forgotPassword/${resetToken}`
     );
 
+    await user.save();
     return res.json({
       status: "success",
       message: "reset password link sent to email",
@@ -242,16 +241,41 @@ const logout = async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-  }
-  );
+  });
   res.json({
     status: "success",
-    message: "logout successful"
-  })
+    message: "logout successful",
+  });
 };
 
+const checkAuth = async (req,res) => {
+  try {
+
+    const user = await User.findId(req.userId).select("-password");
+
+    if(!user)
+    {
+      return res.json({
+        status: "Failed",
+        message: "User not Found"
+      })
+    }
+
+    res.json({
+      status: "success",
+      user
+    })
+
+  } catch (error) {
+    res.json({
+      status: "Failed",
+      message: error.message
+    })
+  }
+}
 
 module.exports = {
+  checkAuth,
   signUpUser,
   loginUser,
   forgotPassword,
