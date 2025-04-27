@@ -159,7 +159,7 @@ const Signup = () => {
               <div className="relative w-full flex justify-center">
                 <button
                   type="submit"
-                  className="pointer p-1 w-full max-w-2/4 bg-green-200 cursor-pointer border-transparent border-2 hover:border-green-200 hover:border-2 hover:bg-transparent transition duration-400 text-2xl font-light text-green-400"
+                  className="pointer p-1 w-full max-w-2/4 bg-green-300 cursor-pointer border-transparent border-2 hover:border-green-200 hover:border-2 hover:bg-transparent transition duration-400 text-2xl text-gray-900 font-semibold"
                 >
                   sign up
                 </button>

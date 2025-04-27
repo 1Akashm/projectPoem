@@ -35,7 +35,10 @@ const Layout = () => {
             transition={{ duration: 1 }}
             className="text-5xl font-bold text-center absolute"
           >
-            {title}, Poematic
+            {title},{" "}
+            <span className="text-6xl font-bold bg-gradient-to-r  from-green-200 to-green-500 bg-clip-text text-transparent">
+              Vrsify
+            </span>
           </motion.h2>
         )}
       </AnimatePresence>

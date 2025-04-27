@@ -23,6 +23,9 @@ const Login = () => {
       <FadeInOut title="Login To">
         <div className="w-full h-dvh flex items-center justify-center">
           <div className="w-full max-w-3xl h-fit p-4 pb-1  bg-slate-100  backdrop-blur-sm backdrop-filter rounded-3xl shadow-xl drop-shadow-2xl relative">
+            <h2 className="from-green-300 to-green-700 bg-gradient-to-r text-3xl font-bold text-center bg-clip-text text-transparent">
+              Login To Vrsify
+            </h2>
             <form method="post">
               <Input
                 icons={Mail}
@@ -55,7 +58,7 @@ const Login = () => {
                 <button
                   // type="submit"
                   onClick={setUpLoader}
-                  className="overflow-clip pointer p-1 w-full max-w-2/4 bg-green-200 cursor-pointer border-transparent border-2 hover:border-green-200 hover:border-2 hover:bg-transparent transition duration-400 text-2xl font-light text-green-400"
+                  className="overflow-clip pointer p-1 w-full max-w-2/4 bg-green-300 cursor-pointer border-transparent border-2 hover:border-green-200 hover:border-2 hover:bg-transparent transition duration-400 text-2xl  text-gray-900 font-semibold"
                 >
                   {loading ? (
                     <Loader className="w-full animate-spin text-center" />
