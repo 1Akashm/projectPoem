@@ -6,10 +6,12 @@ import Login from "./components/login/Login";
 import Layout from "./components/Layout";
 import { ToastContainer } from "react-toastify";
 import Home from "./components/rootPath/Home";
+import Navbar from "./components/navbar/Navbar";
 
 const App = () => {
   return (
     <Router>
+      <Navbar/>
       <ToastContainer
         position="bottom-right"
         draggable
