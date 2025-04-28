@@ -1,23 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FadeInOut from "../animationLoadOnEachRoute/FadeInOut";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../signup/Input";
-import { PasswordCriteria, PasswordMeter } from "../passwordMeter";
 import { Eye, EyeOff, LockKeyhole, Mail, Loader } from "lucide-react";
 import Circle from "../rootPath/Circle";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Login = () => {
   const [showPassword, setEyePassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-
-  function setUpLoader() {
-    setLoading(true);
-  }
 
   function togglePasswordVisibility() {
     setEyePassword((prev) => !prev);
   }
+
+  // useEffect(() => {
+  //   // const fetch = async () => {
+  //   //   const response = await axios.post("http://localhost:5000/api/v1/login");
+  //   //   console.log("response",response);
+
+  //   //   if (formData.email == "" || formData.password=="") {
+  //   //     return toast.error("Field cannot be empty");
+  //   //   }
+  //   // };
+  //   // fetch();
+  // });
+
+  function handleLogin(e) {
+    e.preventDefault();
+    if (formData.password == "" || formData.email == "") {
+      toast.error("Fields cannot be empty");
+      setLoading(false);
+      return;
+    }
+
+    navigate("/home")
+  }
+
   return (
     <React.Fragment>
       <FadeInOut title="Login To">
@@ -26,14 +53,16 @@ const Login = () => {
             <h2 className="from-green-300 to-green-700 bg-gradient-to-r text-3xl font-bold text-center bg-clip-text text-transparent">
               Login To Vrsify
             </h2>
-            <form method="post">
+            <form method="post" onSubmit={handleLogin}>
               <Input
                 icons={Mail}
                 type="text"
                 placeholder="email"
                 name="email"
-                // value={formData.email}
-                // onChange={handleChange}
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
               />
 
               <div className="relative">
@@ -42,8 +71,10 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   placeholder="password"
                   name="password"
-                  // value={formData.password}
-                  // onChange={handleChange}
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                 />
                 <button
                   type="button"
@@ -56,15 +87,14 @@ const Login = () => {
 
               <div className="relative w-full flex justify-center">
                 <button
-                  // type="submit"
-                  onClick={setUpLoader}
+                  type="submit"
                   className="overflow-clip pointer p-1 w-full max-w-2/4 bg-green-300 cursor-pointer border-transparent border-2 hover:border-green-200 hover:border-2 hover:bg-transparent transition duration-400 text-2xl  text-gray-900 font-semibold"
                 >
                   {loading ? (
                     <Loader className="w-full animate-spin text-center" />
-                  ) : (
-                    <Link to="/home">Login</Link>
-                  )}
+                  ) : 
+                      "Login"
+                  }
                 </button>
               </div>
             </form>
