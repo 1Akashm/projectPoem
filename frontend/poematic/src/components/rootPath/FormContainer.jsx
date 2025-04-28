@@ -6,12 +6,14 @@ import { motion } from "framer-motion";
 import FadeInOut from "../animationLoadOnEachRoute/FadeInOut";
 import { repeat } from "lodash";
 import HomeButton from "../HomeButton";
+import Navbar from "../navbar/Navbar";
 
 const FormContainer = () => {
   return (
     <React.Fragment>
       <div className="overflow-clip w-full">
         <FadeInOut>
+          <Navbar/>
           <FormPage
             as={motion.div}
             className="h-screen overflow-clip w-full flex justify-center items-center relative"

@@ -6,6 +6,7 @@ import { Eye, EyeOff, LockKeyhole, Mail, Loader } from "lucide-react";
 import Circle from "../rootPath/Circle";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Navbar from "../navbar/Navbar";
 
 const Login = () => {
   const [showPassword, setEyePassword] = useState(false);
@@ -48,6 +49,7 @@ const Login = () => {
   return (
     <React.Fragment>
       <FadeInOut title="Login To">
+        <Navbar />
         <div className="w-full h-dvh flex items-center justify-center">
           <div className="w-full max-w-3xl h-fit p-4 pb-1  bg-slate-100  backdrop-blur-sm backdrop-filter rounded-3xl shadow-xl drop-shadow-2xl relative">
             <h2 className="from-green-300 to-green-700 bg-gradient-to-r text-3xl font-bold text-center bg-clip-text text-transparent">

@@ -9,6 +9,7 @@ import FadeInOut from "../animationLoadOnEachRoute/FadeInOut";
 import { PasswordMeter, PasswordCriteria } from "../passwordMeter";
 import { toast } from "react-toastify";
 import Circle from "../rootPath/Circle";
+import Navbar from "../navbar/Navbar";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -108,8 +109,9 @@ const Signup = () => {
 
   return (
     <React.Fragment>
-      <SignUpElement className="w-full flex justify-center items-center relative overflow-clip">
         <FadeInOut className="w-full">
+          <Navbar/>
+      <SignUpElement className="w-full flex justify-center items-center relative overflow-clip">
           <div className="p-8 pb-1 w-full bg-slate-100 max-w-3xl backdrop-blur-sm backdrop-filter rounded-3xl shadow-xl drop-shadow-2xl relative">
             <h2 className="from-green-300 to-green-700 bg-gradient-to-r text-3xl font-bold text-center bg-clip-text text-transparent">
               Create Account
@@ -179,8 +181,8 @@ const Signup = () => {
           <Circle width="5rem" height="5rem" top="30%" left="0%" delay="0" />
           <Circle width="8rem" height="8rem" top="20%" left="90%" delay="4" />
           <Circle width="12rem" height="12rem" top="80%" left="40%" delay="6" />
-        </FadeInOut>
       </SignUpElement>
+        </FadeInOut>
     </React.Fragment>
   );
 };

@@ -34,7 +34,7 @@ const App = () => {
         }
         style={{ bottom: "10%" }}
       />
-      <Navbar />
+      
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/home" element={<Home />} />
