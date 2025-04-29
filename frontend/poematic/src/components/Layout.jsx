@@ -10,6 +10,7 @@ const Layout = () => {
   const titleMap = {
     "/signup": "SignUp To",
     "/login": "Login To",
+    "/verification": "Verify Your Account",
     "/": "Welcome To",
   };
 

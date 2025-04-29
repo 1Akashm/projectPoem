@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import FormContainer from "./components/rootPath/FormContainer";
 import {
   BrowserRouter as Router,
@@ -10,7 +10,6 @@ import Login from "./components/login/Login";
 import Layout from "./components/Layout";
 import { ToastContainer } from "react-toastify";
 import Home from "./components/rootPath/Home";
-import Navbar from "./components/navbar/Navbar";
 import Verification from "./components/verification/Verification";
 
 const App = () => {
