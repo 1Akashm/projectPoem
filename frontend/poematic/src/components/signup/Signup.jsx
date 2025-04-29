@@ -10,54 +10,108 @@ import { PasswordMeter, PasswordCriteria } from "../passwordMeter";
 import { toast } from "react-toastify";
 import Circle from "../rootPath/Circle";
 import Navbar from "../navbar/Navbar";
+import { signUpStore } from "../store/Store";
 
 const Signup = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   email: "",
+  //   password: "",
+  // });
 
-  const [showPassword, setEyePassword] = useState(false);
+  // const [showPassword, setEyePassword] = useState(false);
 
-  function togglePasswordVisibility() {
-    setEyePassword((prev) => !prev);
-  }
+  // function togglePasswordVisibility() {
+  //   setEyePassword((prev) => !prev);
+  // }
 
-  const debounceFormInput = useMemo(
-    () =>
-      debounce((updated) => {
-        updated;
-      }, 300),
-    []
-  );
+  // const debounceFormInput = useMemo(
+  //   () =>
+  //     debounce((updated) => {
+  //       updated;
+  //     }, 300),
+  //   []
+  // );
+
+  // useEffect(() => {
+  //   return () => debounceFormInput.cancel(); // clean up debounce
+  // }, [debounceFormInput]);
+
+  // function handleChange(e) {
+  //   const { name, value } = e.target;
+
+  //   setFormData((prev) => {
+  //     const updated = { ...prev, [name]: value };
+  //     debounceFormInput(updated);
+  //     return updated;
+  //   });
+  // }
+
+  // function handleForm(e) {
+  //   e.preventDefault(); // prevent default submit
+  //   // Validate password criteria
+  //   const password = formData.password;
+
+  //   // First, check if all fields are filled
+  //   if (!formData.name || !formData.email || !formData.password) {
+  //     toast.error("All fields are required");
+  //     return; // 🚫 STOP submit
+  //   }
+
+  //   const isValidPassword =
+  //     password.length >= 6 &&
+  //     /[A-Z]/.test(password) &&
+  //     /[a-z]/.test(password) &&
+  //     /\d/.test(password) &&
+  //     /[^A-Za-z0-9]/.test(password);
+
+  //   if (!isValidPassword) {
+  //     toast.error("password criteria not met.");
+  //     return; // 🚫 STOP submit
+  //   }
+  //   submitFormData();
+  // }
+
+  // async function submitFormData() {
+  //   try {
+  //     const response = await axios.post("http://localhost:5000/api/v1/signup", {
+  //       name: formData.name,
+  //       email: formData.email,
+  //       password: formData.password,
+  //     });
+
+  //     console.log("data:", response.data);
+
+  //     setFormData({
+  //       name: "",
+  //       email: "",
+  //       password: "",
+  //     });
+
+  //     toast.success("Signup successful");
+  //   } catch (error) {
+  //     console.log("error:", error.response?.data || error.message);
+  //     toast.error(error.response?.data?.message || "Something went wrong");
+  //   }
+  // }
+
+  const {
+    formData,
+    showPassword,
+    setFormData,
+    toggleShowPassword,
+    resetForm,
+    cancelDebounced,
+  } = signUpStore();
 
   useEffect(() => {
-    return () => debounceFormInput.cancel(); // clean up debounce
-  }, [debounceFormInput]);
+    cancelDebounced();
+  }, []);
 
   function handleChange(e) {
     const { name, value } = e.target;
-
-    setFormData((prev) => {
-      const updated = { ...prev, [name]: value };
-      debounceFormInput(updated);
-      return updated;
-    });
+    setFormData(name, value);
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await axios.get("http://localhost:5000/api/v1/checkAuth");
-        console.log("data: ", data);
-      } catch (error) {
-        console.log("error:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   function handleForm(e) {
     e.preventDefault(); // prevent default submit
@@ -86,20 +140,9 @@ const Signup = () => {
 
   async function submitFormData() {
     try {
-      const response = await axios.post("http://localhost:5000/api/v1/signup", {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
-
-      console.log("data:", response.data);
-
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-      });
-
+      await axios.post("http://localhost:5000/api/v1/signup", formData);
+      resetForm();
+      cancelDebounced();
       toast.success("Signup successful");
     } catch (error) {
       console.log("error:", error.response?.data || error.message);
@@ -109,9 +152,9 @@ const Signup = () => {
 
   return (
     <React.Fragment>
-        <FadeInOut className="w-full">
-          <Navbar/>
-      <SignUpElement className="w-full flex justify-center items-center relative overflow-clip">
+      <FadeInOut className="w-full">
+        <Navbar />
+        <SignUpElement className="w-full flex justify-center items-center relative overflow-clip">
           <div className="p-8 pb-1 w-full bg-slate-100 max-w-3xl backdrop-blur-sm backdrop-filter rounded-3xl shadow-xl drop-shadow-2xl relative">
             <h2 className="from-green-300 to-green-700 bg-gradient-to-r text-3xl font-bold text-center bg-clip-text text-transparent">
               Create Account
@@ -148,7 +191,7 @@ const Signup = () => {
 
                 <button
                   type="button"
-                  onClick={togglePasswordVisibility}
+                  onClick={toggleShowPassword}
                   className="text-green-300 absolute right-8 top-1/2 transform -translate-y-1/2 cursor-pointer "
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -181,8 +224,8 @@ const Signup = () => {
           <Circle width="5rem" height="5rem" top="30%" left="0%" delay="0" />
           <Circle width="8rem" height="8rem" top="20%" left="90%" delay="4" />
           <Circle width="12rem" height="12rem" top="80%" left="40%" delay="6" />
-      </SignUpElement>
-        </FadeInOut>
+        </SignUpElement>
+      </FadeInOut>
     </React.Fragment>
   );
 };

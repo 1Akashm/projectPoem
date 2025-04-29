@@ -21,7 +21,7 @@ const Layout = () => {
       setShowNavbar(true);
       const timer = setTimeout(() => {
         setShowNavbar(false);
-      }, 2000); // Hide after 3 seconds
+      }, 2000); 
       return () => clearTimeout(timer); // Clean up timer on unmount
     } else {
       setShowNavbar(false); // Hide Navbar if not on "/"

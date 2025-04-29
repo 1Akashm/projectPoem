@@ -11,6 +11,7 @@ import Layout from "./components/Layout";
 import { ToastContainer } from "react-toastify";
 import Home from "./components/rootPath/Home";
 import Navbar from "./components/navbar/Navbar";
+import Verification from "./components/verification/Verification";
 
 const App = () => {
 
@@ -41,6 +42,7 @@ const App = () => {
           <Route index element={<FormContainer />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/verification" element={<Verification/>}/>
         </Route>
       </Routes>
     </Router>
