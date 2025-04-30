@@ -7,35 +7,28 @@ import Circle from "../rootPath/Circle";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Navbar from "../navbar/Navbar";
+import { signUpStore, storeLogin } from "../store/Store";
 
 const Login = () => {
-  const [showPassword, setEyePassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const navigate = useNavigate();
+  const { cancelDebounced } = signUpStore();
+  const {
+    formData,
+    setFormData,
+    toggleShowPassword,
+    resetFormData,
+    showPassword,
+  } = storeLogin();
 
   const [loading, setLoading] = useState(false);
 
-  function togglePasswordVisibility() {
-    setEyePassword((prev) => !prev);
+  const navigate = useNavigate();
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData(name, value);
   }
 
-  // useEffect(() => {
-  //   // const fetch = async () => {
-  //   //   const response = await axios.post("http://localhost:5000/api/v1/login");
-  //   //   console.log("response",response);
-
-  //   //   if (formData.email == "" || formData.password=="") {
-  //   //     return toast.error("Field cannot be empty");
-  //   //   }
-  //   // };
-  //   // fetch();
-  // });
-
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
     if (formData.password == "" || formData.email == "") {
       toast.error("Fields cannot be empty");
@@ -43,8 +36,32 @@ const Login = () => {
       return;
     }
 
-    navigate("/home")
-    toast.success("Login successful")
+    await submitLogin();
+
+    navigate("/home");
+    // Only navigate if login was successful
+  }
+
+  async function submitLogin() {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/login",
+        formData
+      );
+      console.log("response", response);
+      if (response.data.status === "Failed") {
+        toast.error("Email or password doesn't match");
+        return "failed";
+      }
+      localStorage.setItem("authToken",response.data.isAccountVerified);
+      toast.success("Login successful");
+
+      // cancelDebounced();
+      resetFormData();
+      return "success";
+    } catch (error) {
+      console.log("Error in logIn", error);
+    }
   }
 
   return (
@@ -63,9 +80,7 @@ const Login = () => {
                 placeholder="email"
                 name="email"
                 value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
+                onChange={handleChange}
               />
 
               <div className="relative">
@@ -75,13 +90,11 @@ const Login = () => {
                   placeholder="password"
                   name="password"
                   value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
+                  onChange={handleChange}
                 />
                 <button
                   type="button"
-                  onClick={togglePasswordVisibility}
+                  onClick={toggleShowPassword}
                   className="text-green-300 absolute right-8 top-1/2 transform -translate-y-1/2 cursor-pointer "
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -95,9 +108,9 @@ const Login = () => {
                 >
                   {loading ? (
                     <Loader className="w-full animate-spin text-center" />
-                  ) : 
-                      "Login"
-                  }
+                  ) : (
+                    "Login"
+                  )}
                 </button>
               </div>
             </form>
