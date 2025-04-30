@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState } from "react";
 import styled from "styled-components";
 import { User, Mail, LockKeyhole, Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { debounce } from "lodash";
 import axios from "axios";
 import Input from "./Input";
@@ -95,6 +95,7 @@ const Signup = () => {
   //   }
   // }
 
+  const navigate = useNavigate();
   const {
     formData,
     showPassword,
@@ -136,6 +137,8 @@ const Signup = () => {
       return; // 🚫 STOP submit
     }
     submitFormData();
+    toast.success("Verify your account");
+    navigate("/verification");
   }
 
   async function submitFormData() {

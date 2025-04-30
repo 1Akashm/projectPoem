@@ -3,7 +3,7 @@ import { debounce } from "lodash";
 
 export const signUpStore = create((set, get) => {
   const debouncedSave = debounce((updated) => {
-    const {password,...safeData} = updated;
+    const { password, ...safeData } = updated;
     localStorage.setItem("signUpData", JSON.stringify(safeData));
   }, 300);
   return {
@@ -38,3 +38,9 @@ export const signUpStore = create((set, get) => {
     },
   };
 });
+
+export const VerificationStore = create((set) => ({
+  code: Array(6).fill(""),
+  setCode: (newCode)=>set({code: newCode}),
+  resetCode: () => set({ code: Array(6).fill("") }),
+}));

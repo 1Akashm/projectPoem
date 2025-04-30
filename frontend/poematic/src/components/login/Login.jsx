@@ -44,6 +44,7 @@ const Login = () => {
     }
 
     navigate("/home")
+    toast.success("Login successful")
   }
 
   return (

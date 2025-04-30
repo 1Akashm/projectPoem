@@ -1,37 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { VerificationStore } from "../store/Store";
 
-const VerificationInput = ({
-  index,
-  inputLength,
-  code,
-  setCode,
-  handleSubmit,
-}) => {
+const VerificationInput = ({ index, inputLength }) => {
+  const { code, setCode } = VerificationStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Delay form submission to allow user to finish typing
   useEffect(() => {
     if (isSubmitting) {
       const timeout = setTimeout(() => {
         if (code.every((digit) => digit !== "")) {
-          handleSubmit(); // Trigger form submission when all inputs are filled
+          document.querySelector("form")?.requestSubmit(); // Trigger submit
         }
-        setIsSubmitting(false); // Reset submission state
-      }, 200); // Delay of 200ms to allow input to update fully
+        setIsSubmitting(false);
+      }, 200);
       return () => clearTimeout(timeout);
     }
-  }, [isSubmitting, code, handleSubmit]);
+  }, [isSubmitting, code]);
 
   const handleInput = (e) => {
     const value = e.target.value;
 
-    if (value !== "") {
-      e.target.classList.add("bg-green-600");
-    } else {
-      e.target.classList.remove("bg-green-600");
-    }
-
-    // Only allow a single digit
     if (!/^\d?$/.test(value)) {
       e.target.value = "";
       return;
@@ -42,15 +30,12 @@ const VerificationInput = ({
     setCode(newCode);
 
     if (value) {
-      if (index < inputLength - 1) {
-        const nextInput = document.querySelector(`#input-${index + 1}`);
-        if (nextInput) nextInput.focus();
-      } else {
-        e.target.blur();
-      }
+      const nextInput = document.querySelector(`#input-${index + 1}`);
+      if (nextInput) nextInput.focus();
+      else e.target.blur();
     }
 
-    setIsSubmitting(true); // Set submitting state to true
+    setIsSubmitting(true);
   };
 
   const handleKeyDown = (e) => {
@@ -62,10 +47,7 @@ const VerificationInput = ({
 
   const pasteInput = (e) => {
     e.preventDefault();
-    const pasted = e.clipboardData
-      .getData("text")
-      .replace(/\D/g, "")
-      .slice(0, inputLength);
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, inputLength);
     const newCode = [...code];
 
     pasted.split("").forEach((char, i) => {
@@ -78,12 +60,10 @@ const VerificationInput = ({
     setCode(newCode);
 
     const nextFocusIndex = index + pasted.length;
-    if (nextFocusIndex < inputLength) {
-      const nextFocus = document.getElementById(`input-${nextFocusIndex}`);
-      if (nextFocus) nextFocus.focus();
-    }
+    const nextFocus = document.getElementById(`input-${nextFocusIndex}`);
+    if (nextFocus) nextFocus.focus();
 
-    setIsSubmitting(true); // Set submitting state to true
+    setIsSubmitting(true);
   };
 
   return (

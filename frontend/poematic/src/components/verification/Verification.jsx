@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import FadeInOut from "../animationLoadOnEachRoute/FadeInOut";
 import VerificationInput from "./VerificationInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Circle from "../rootPath/Circle";
+import { VerificationStore } from "../store/Store";
+import { toast } from "react-toastify";
 
 const Verification = () => {
-  const [code, setCode] = useState(Array(6).fill(""));
-
+  const { code, resetCode } = VerificationStore();
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     if (e) e.preventDefault(); // Prevent default submission
-    // code.join(""); for 1,2,3,4,5,6 to 123456
+    code.join(""); //for 1,2,3,4,5,6 to 123456
 
     if (code.some((digit) => digit === "")) {
-      alert("Please enter all the digits of the verification code.");
+      toast.error("Please enter all the digits of the verification code.");
       return;
     }
-
-    setCode(Array(6).fill("")); // Reset the code after submission
+    toast.success("Verification successful");
+    navigate("/login");
+    // console.log("code: ", code.join(""));
+    resetCode(); // Reset the code after submission
   };
 
   return (
@@ -30,14 +34,7 @@ const Verification = () => {
           >
             <div className="flex gap-2">
               {Array.from({ length: 6 }).map((_, index) => (
-                <VerificationInput
-                  key={index}
-                  index={index}
-                  inputLength={6}
-                  code={code}
-                  setCode={setCode}
-                  handleSubmit={handleSubmit}
-                />
+                <VerificationInput key={index} index={index} inputLength={6} />
               ))}
             </div>
             <button
