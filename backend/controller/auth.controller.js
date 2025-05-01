@@ -88,7 +88,11 @@ const verifyEmail = async (req, res) => {
     user.verificationTokenExpiresAt = undefined;
 
     await user.save();
+    try{
     await sendWelcomeEmail(user.email, user.name);
+    }catch(err){
+      console.log("Send email failed",err.message);
+    }
 
     res.json({
       status: "success",

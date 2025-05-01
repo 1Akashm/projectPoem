@@ -37,7 +37,6 @@ const Login = () => {
     }
 
     await submitLogin();
-
     navigate("/home");
     // Only navigate if login was successful
   }
@@ -48,7 +47,7 @@ const Login = () => {
         "http://localhost:5000/api/v1/login",
         formData
       );
-      console.log("response", response);
+      // console.log("response", response);
       if (response.data.status === "Failed") {
         toast.error("Email or password doesn't match");
         return "failed";

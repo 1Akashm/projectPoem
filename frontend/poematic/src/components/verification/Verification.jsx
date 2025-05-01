@@ -5,23 +5,53 @@ import { Link, useNavigate } from "react-router-dom";
 import Circle from "../rootPath/Circle";
 import { VerificationStore } from "../store/Store";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const Verification = () => {
   const { code, resetCode } = VerificationStore();
+  const codeUpdate = code.join(""); //for 1,2,3,4,5,6 to 123456
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     if (e) e.preventDefault(); // Prevent default submission
-    code.join(""); //for 1,2,3,4,5,6 to 123456
 
     if (code.some((digit) => digit === "")) {
       toast.error("Please enter all the digits of the verification code.");
       return;
     }
-    toast.success("Verification successful");
+    
+    verificationSubmit();
     navigate("/login");
     // console.log("code: ", code.join(""));
     resetCode(); // Reset the code after submission
   };
+  
+  
+  async function verificationSubmit()
+  {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/verifyEmail",
+        { code: codeUpdate }, // wrap code in an object
+        {
+          headers: {
+            "Content-Type": "application/json", // important!
+          },
+        }
+      );
+      console.log("Response verify", response.data);
+
+      if(response.data.status === "Failed"){
+        toast.error("Invalid Token");
+        return "failed";
+      }
+
+      toast.success("Verification successful");
+      return "success";
+    } catch (error) {
+      console.error("Verification failed:", error);
+      toast.error("Verification failed. Please try again.");
+    }
+  }
 
   return (
     <FadeInOut>

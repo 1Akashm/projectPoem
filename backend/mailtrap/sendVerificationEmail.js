@@ -25,7 +25,7 @@ const sendVerificationEmail = async (user, email, verificationToken) => {
 const sendWelcomeEmail = async (email, name) => {
   const recipient = [{ email }];
   try {
-    const response = mailTrapClient.send({
+    const response =await mailTrapClient.send({
       from: sender,
       to: recipient,
       template_uuid: "29c8d213-ff96-42aa-a6b3-0e96e0a2b4ea",
@@ -35,7 +35,7 @@ const sendWelcomeEmail = async (email, name) => {
       },
     });
   } catch (error) {
-    throw new error("Welcome email error, ", error);
+    throw new error("Welcome email error, ", error.message);
   }
 };
 
@@ -51,7 +51,7 @@ const sendPasswordResetEmail = async (email, resetURL) => {
     });
   } catch (error) {
     console.log("Error in forgot password,", error);
-    throw new error("Error in forgot password, ", error);
+    throw new error("Error in forgot password, ", error.message);
   }
 };
 
@@ -67,7 +67,7 @@ const sendResetSuccessful = async (email) => {
     });
   } catch (error) {
     console.log("Error in reset password,", error);
-    throw new error("Error in reset password, ", error);
+    throw new error("Error in reset password, ", error.message);
   }
 };
 
