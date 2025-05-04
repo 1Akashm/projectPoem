@@ -54,11 +54,14 @@ export const storeLogin = create((set,get) =>{
   
 
   return{
+    isLogged: false,
     showPassword: false,
     formData:{
       email: "",
       password:""
     },
+
+    
 
     setFormData:(name,value)=>{
       const updated = {...get().formData,[name]:value};
@@ -68,6 +71,10 @@ export const storeLogin = create((set,get) =>{
 
     toggleShowPassword: () => {
       set((state) => ({ showPassword: !state.showPassword }));
+    },
+
+    setIsLogged:(value)=>{
+        set({isLogged: value})
     },
 
     resetFormData:()=>{

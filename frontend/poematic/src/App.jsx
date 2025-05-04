@@ -1,13 +1,13 @@
 import React from "react";
-import FormContainer from "./components/rootPath/FormContainer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
-import Layout from "./components/Layout";
 import { ToastContainer } from "react-toastify";
 import Home from "./components/rootPath/Home";
 import Verification from "./components/verification/Verification";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
+import RootPath from "./components/rootPath/RootPath";
+import Layout from "./components/Layout";
 
 const App = () => {
   return (
@@ -30,19 +30,22 @@ const App = () => {
         }
         style={{ bottom: "10%" }}
       />
-
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<FormContainer />} />
+      <Layout>
+        <Routes>
+          <Route path="/" element={<RootPath />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/verification" element={<Verification />} />
           <Route
-          path="/home"
-          element={<ProtectedRoute element={<Home />} />}
-        />
-        </Route>
-      </Routes>
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Layout>
     </Router>
   );
 };

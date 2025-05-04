@@ -1,5 +1,4 @@
 import React from "react";
-import FadeInOut from "../animationLoadOnEachRoute/FadeInOut";
 import VerificationInput from "./VerificationInput";
 import { Link, useNavigate } from "react-router-dom";
 import Circle from "../rootPath/Circle";
@@ -31,7 +30,7 @@ const Verification = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/verifyEmail",
-        { code: codeUpdate }, // wrap code in an object
+        { code: codeUpdate }, // wrap code in an object we wrote {code} because backend has code as variable to receive it
         {
           headers: {
             "Content-Type": "application/json", // important!
@@ -54,7 +53,7 @@ const Verification = () => {
   }
 
   return (
-    <FadeInOut>
+    <>
       <div className="flex w-full max-w-md flex-col border-green-600 border-2 p-10 outline-0 rounded-2xl">
         <h1 className="text-center font-bold text-4xl">Verify your account</h1>
         <div className="flex flex-col w-full gap-3 mt-10 focus:shadow-slate-400">
@@ -91,7 +90,7 @@ const Verification = () => {
       <Circle width="5rem" height="5rem" top="30%" left="0%" delay="0" />
       <Circle width="8rem" height="8rem" top="20%" left="90%" delay="4" />
       <Circle width="12rem" height="12rem" top="80%" left="40%" delay="6" />
-    </FadeInOut>
+      </>
   );
 };
 

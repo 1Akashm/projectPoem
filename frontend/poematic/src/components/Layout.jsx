@@ -1,87 +1,62 @@
-import React, { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
-const Layout = () => {
-  const [showWelcome, setShowWelcome] = useState(true);
-  const [showNavbar, setShowNavbar] = useState(false); // Track visibility of Navbar
-  const location = useLocation(); // track route changes
+const boxVariants = {
+  initial: { y: "-100%" },
+  animate: (i) => ({
+    y: 0,
+    transition: {
+      duration: 0.2,
+      delay: i * 0.2, // stagger in
+      ease: "easeInOut",
+    },
+  }),
+  exit: (i) => ({
+    y: "100%",
+    transition: {
+      duration: 0.2,
+      delay: i * 0.2, // stagger out
+      ease: "easeInOut",
+    },
+  }),
+};
 
-  const titleMap = {
-    "/signup": "SignUp To",
-    "/login": "Login To",
-    "/verification": "Verify Your Account",
-    "/": "Welcome To",
-  };
+const Layout = ({ children }) => {
+  const [showOverlay, setShowOverlay] = useState(true);
+  const location = useLocation();
 
-  const title = titleMap[location.pathname] || "Loading";
-
-  // Show navbar if we're on the "/" path
   useEffect(() => {
-    if (location.pathname === "/") {
-      setShowNavbar(true);
-      const timer = setTimeout(() => {
-        setShowNavbar(false);
-      }, 2000); 
-      return () => clearTimeout(timer); // Clean up timer on unmount
-    } else {
-      setShowNavbar(false); // Hide Navbar if not on "/"
-    }
+    setShowOverlay(true);
+    const timer = setTimeout(() => {
+      setShowOverlay(false);
+    }, 2000); // Enough time for both entry and exit stagger
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 
-  // Show welcome message when location changes, but not on the "/" path
-  useEffect(() => {
-    if (location.pathname !== "/") {
-      setShowWelcome(true); // Always show welcome when location changes
-      const timer = setTimeout(() => {
-        setShowWelcome(false);
-      }, 2000); // Show for 2 seconds
-
-      return () => clearTimeout(timer);
-    }
-  }, [location.pathname]);
 
   return (
-    <div className="w-full h-screen flex justify-center items-center relative overflow-hidden">
-      <AnimatePresence mode="wait">
-        {/* Render Navbar with animation if on "/" path */}
-        {showNavbar && location.pathname === "/" && (
-          <motion.h2
-            key="navbar"
-            initial={{ opacity: 0, y: -40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 40 }}
-            transition={{ duration: 1 }}
-            className="text-5xl font-bold text-center absolute"
-          >
-            {title},
-            <span className="text-6xl font-bold bg-gradient-to-r from-green-200 to-green-500 bg-clip-text text-transparent">
-              Vrsify
-            </span>
-          </motion.h2>
-        )}
-
-        {/* Render Welcome message with animation but NOT when on the "/" path */}
-        {showWelcome && location.pathname !== "/" && (
-          <motion.h2
-            key="welcome"
-            initial={{ opacity: 0, y: -40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 40 }}
-            transition={{ duration: 1 }}
-            className="text-5xl font-bold text-center absolute"
-          >
-            {title},
-            <span className="text-6xl font-bold bg-gradient-to-r from-green-200 to-green-500 bg-clip-text text-transparent">
-              Vrsify
-            </span>
-          </motion.h2>
+    <>
+      <AnimatePresence>
+        {showOverlay && (
+          <div className="flex fixed top-0 left-0 w-full h-full z-50 pointer-events-none">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <motion.div
+                key={i}
+                custom={i}
+                variants={boxVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="bg-green-300 h-full"
+                style={{ width: `${100 / 6}%` }}
+              />
+            ))}
+          </div>
         )}
       </AnimatePresence>
-
-      {/* Page content */}
-      <Outlet />
-    </div>
+      {!showOverlay && <div>{children}</div>}
+    </>
   );
 };
 

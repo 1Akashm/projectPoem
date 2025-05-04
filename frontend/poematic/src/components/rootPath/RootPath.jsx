@@ -3,17 +3,13 @@ import Circle from "./Circle";
 import styled from "styled-components";
 import Login from "../login/Login";
 import { motion } from "framer-motion";
-import FadeInOut from "../animationLoadOnEachRoute/FadeInOut";
 import { repeat } from "lodash";
 import HomeButton from "../HomeButton";
-import Navbar from "../navbar/Navbar";
 
-const FormContainer = () => {
+const RootPath = () => {
   return (
     <React.Fragment>
       <div className="overflow-clip w-full">
-        <FadeInOut>
-          <Navbar/>
           <FormPage
             as={motion.div}
             className="h-screen overflow-clip w-full flex justify-center items-center relative"
@@ -30,8 +26,8 @@ const FormContainer = () => {
 
             <div className="w-dvw h-dvh flex justify-center items-center relative">
               <div className="w-vw absolute right-7 top-14 flex gap-5">
-                <HomeButton link="login" width="100%" value="Login" />
-                <HomeButton link="signup" width="100%" value="Signup" />
+                <HomeButton link="/login" width="100%" value="Login" />
+                <HomeButton link="/signup" width="100%" value="Signup" />
               </div>
               <div className="w-100% max-w-3xl">
                 <h2 className="mb-6">
@@ -81,13 +77,12 @@ const FormContainer = () => {
               </div>
             </div>
           </FormPage>
-        </FadeInOut>
       </div>
     </React.Fragment>
   );
 };
 
-export default FormContainer;
+export default RootPath;
 const FormPage = styled.div`
   /* background: var(--color-code-1); */
 `;

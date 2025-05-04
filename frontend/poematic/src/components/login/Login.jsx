@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import FadeInOut from "../animationLoadOnEachRoute/FadeInOut";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../signup/Input";
 import { Eye, EyeOff, LockKeyhole, Mail, Loader } from "lucide-react";
 import Circle from "../rootPath/Circle";
 import { toast } from "react-toastify";
 import axios from "axios";
-import Navbar from "../navbar/Navbar";
 import { signUpStore, storeLogin } from "../store/Store";
 
 const Login = () => {
   const { cancelDebounced } = signUpStore();
   const {
+    setIsLogged,
     formData,
     setFormData,
     toggleShowPassword,
@@ -54,7 +53,7 @@ const Login = () => {
       }
       localStorage.setItem("authToken",response.data.isAccountVerified);
       toast.success("Login successful");
-
+      setIsLogged(true);
       // cancelDebounced();
       resetFormData();
       return "success";
@@ -65,9 +64,8 @@ const Login = () => {
 
   return (
     <React.Fragment>
-      <FadeInOut title="Login To">
-        <Navbar />
-        <div className="w-full h-dvh flex items-center justify-center">
+       <div className="relative overflow-clip">
+       <div className="w-full h-dvh flex items-center justify-center">
           <div className="w-full max-w-3xl h-fit p-4 pb-1  bg-slate-100  backdrop-blur-sm backdrop-filter rounded-3xl shadow-xl drop-shadow-2xl relative">
             <h2 className="from-green-300 to-green-700 bg-gradient-to-r text-3xl font-bold text-center bg-clip-text text-transparent">
               Login To Vrsify
@@ -136,7 +134,7 @@ const Login = () => {
         <Circle width="5rem" height="5rem" top="30%" left="0%" delay="0" />
         <Circle width="8rem" height="8rem" top="20%" left="90%" delay="4" />
         <Circle width="12rem" height="12rem" top="60%" left="40%" delay="6" />
-      </FadeInOut>
+       </div>
     </React.Fragment>
   );
 };

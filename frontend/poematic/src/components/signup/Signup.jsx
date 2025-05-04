@@ -1,100 +1,15 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import styled from "styled-components";
 import { User, Mail, LockKeyhole, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { debounce } from "lodash";
 import axios from "axios";
 import Input from "./Input";
-import FadeInOut from "../animationLoadOnEachRoute/FadeInOut";
 import { PasswordMeter, PasswordCriteria } from "../passwordMeter";
 import { toast } from "react-toastify";
 import Circle from "../rootPath/Circle";
-import Navbar from "../navbar/Navbar";
 import { signUpStore } from "../store/Store";
 
 const Signup = () => {
-  // const [formData, setFormData] = useState({
-  //   name: "",
-  //   email: "",
-  //   password: "",
-  // });
-
-  // const [showPassword, setEyePassword] = useState(false);
-
-  // function togglePasswordVisibility() {
-  //   setEyePassword((prev) => !prev);
-  // }
-
-  // const debounceFormInput = useMemo(
-  //   () =>
-  //     debounce((updated) => {
-  //       updated;
-  //     }, 300),
-  //   []
-  // );
-
-  // useEffect(() => {
-  //   return () => debounceFormInput.cancel(); // clean up debounce
-  // }, [debounceFormInput]);
-
-  // function handleChange(e) {
-  //   const { name, value } = e.target;
-
-  //   setFormData((prev) => {
-  //     const updated = { ...prev, [name]: value };
-  //     debounceFormInput(updated);
-  //     return updated;
-  //   });
-  // }
-
-  // function handleForm(e) {
-  //   e.preventDefault(); // prevent default submit
-  //   // Validate password criteria
-  //   const password = formData.password;
-
-  //   // First, check if all fields are filled
-  //   if (!formData.name || !formData.email || !formData.password) {
-  //     toast.error("All fields are required");
-  //     return; // 🚫 STOP submit
-  //   }
-
-  //   const isValidPassword =
-  //     password.length >= 6 &&
-  //     /[A-Z]/.test(password) &&
-  //     /[a-z]/.test(password) &&
-  //     /\d/.test(password) &&
-  //     /[^A-Za-z0-9]/.test(password);
-
-  //   if (!isValidPassword) {
-  //     toast.error("password criteria not met.");
-  //     return; // 🚫 STOP submit
-  //   }
-  //   submitFormData();
-  // }
-
-  // async function submitFormData() {
-  //   try {
-  //     const response = await axios.post("http://localhost:5000/api/v1/signup", {
-  //       name: formData.name,
-  //       email: formData.email,
-  //       password: formData.password,
-  //     });
-
-  //     console.log("data:", response.data);
-
-  //     setFormData({
-  //       name: "",
-  //       email: "",
-  //       password: "",
-  //     });
-
-  //     toast.success("Signup successful");
-  //   } catch (error) {
-  //     console.log("error:", error.response?.data || error.message);
-  //     toast.error(error.response?.data?.message || "Something went wrong");
-  //   }
-  // }
-
   const navigate = useNavigate();
   const {
     formData,
@@ -155,8 +70,6 @@ const Signup = () => {
 
   return (
     <React.Fragment>
-      <FadeInOut className="w-full">
-        <Navbar />
         <SignUpElement className="w-full flex justify-center items-center relative overflow-clip">
           <div className="p-8 pb-1 w-full bg-slate-100 max-w-3xl backdrop-blur-sm backdrop-filter rounded-3xl shadow-xl drop-shadow-2xl relative">
             <h2 className="from-green-300 to-green-700 bg-gradient-to-r text-3xl font-bold text-center bg-clip-text text-transparent">
@@ -228,7 +141,6 @@ const Signup = () => {
           <Circle width="8rem" height="8rem" top="20%" left="90%" delay="4" />
           <Circle width="12rem" height="12rem" top="80%" left="40%" delay="6" />
         </SignUpElement>
-      </FadeInOut>
     </React.Fragment>
   );
 };
