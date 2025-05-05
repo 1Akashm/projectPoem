@@ -5,10 +5,9 @@ import { Eye, EyeOff, LockKeyhole, Mail, Loader } from "lucide-react";
 import Circle from "../rootPath/Circle";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { signUpStore, storeLogin } from "../store/Store";
+import { storeLogin } from "../store/Store";
 
 const Login = () => {
-  const { cancelDebounced } = signUpStore();
   const {
     setIsLogged,
     formData,
@@ -46,7 +45,6 @@ const Login = () => {
         "http://localhost:5000/api/v1/login",
         formData
       );
-      // console.log("response", response);
       if (response.data.status === "Failed") {
         toast.error("Email or password doesn't match");
         return "failed";
@@ -54,7 +52,6 @@ const Login = () => {
       localStorage.setItem("authToken",response.data.isAccountVerified);
       toast.success("Login successful");
       setIsLogged(true);
-      // cancelDebounced();
       resetFormData();
       return "success";
     } catch (error) {

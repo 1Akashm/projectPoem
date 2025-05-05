@@ -30,10 +30,9 @@ const Layout = ({ children }) => {
     setShowOverlay(true);
     const timer = setTimeout(() => {
       setShowOverlay(false);
-    }, 2000); // Enough time for both entry and exit stagger
+    }, 1500); // Enough time for both entry and exit stagger
     return () => clearTimeout(timer);
   }, [location.pathname]);
-
 
   return (
     <>

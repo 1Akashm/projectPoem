@@ -8,6 +8,7 @@ import Verification from "./components/verification/Verification";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 import RootPath from "./components/rootPath/RootPath";
 import Layout from "./components/Layout";
+import Navbar from "./components/navbar/Navbar";
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
         style={{ bottom: "10%" }}
       />
       <Layout>
+        <Navbar/>
         <Routes>
           <Route path="/" element={<RootPath />} />
           <Route path="/login" element={<Login />} />
@@ -39,9 +41,9 @@ const App = () => {
           <Route
             path="/home"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <Home />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
         </Routes>
