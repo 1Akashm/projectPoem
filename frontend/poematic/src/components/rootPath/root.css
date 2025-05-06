@@ -1,0 +1,14 @@
+/* Hide the scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide the thumb (the draggable part) for Webkit browsers */
+::-webkit-scrollbar-thumb {
+    display: none;
+}
+
+/* Optionally, for Webkit browsers, you can also hide the track (the background of the scrollbar) */
+::-webkit-scrollbar-track {
+    display: none;
+}
