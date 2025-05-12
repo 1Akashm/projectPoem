@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-// import { Wheel } from "@splidejs/splide-extension-wheel";
 import "@splidejs/react-splide/css";
 import "./root.css";
 import RootParallex from "./RootParallex";
@@ -16,71 +14,69 @@ const images = [
 const RootPath = () => {
   return (
     <React.Fragment>
-
-      {/* <Splide
-            options={{
-              // type: "fade",
-              // rewind: true,
-              // interval: 3000,
-              // wheelMinThreshold: 10,
-              perPage: 1,
-              autoplay: false,
-              pauseOnHover: false,
-              arrows: false,
-              pagination: false,
-              direction: "ttb",
-              wheel: true,
-              releaseWheel: true,
-              waitForTransition: true,
-              height: "100vh",
-            }}
-          >
-            {images.map((item, index) => (
-              <SplideSlide key={index}>
-                <SlideBackground image={item} />
-              </SplideSlide>
-            ))}
-          </Splide> */}
       <RootPage>
         {images.map((item, index) => (
-          <img src={item} alt={index + 1} />
+          <img key={index} src={item} alt={index + 1} />
         ))}
-      <RootParallex />
+        
+        
+        <SlideArrow className="slide">
+          <span></span>
+        </SlideArrow>
       </RootPage>
-
+        <RootParallex />
     </React.Fragment>
   );
 };
 
 export default RootPath;
 
-const ScrollType = styled.div`
-  height: 100dvh;
-`;
-
 const RootPage = styled.div`
-  width: 100%;
-  height: 100dvh;
+  width: 100vw;
+  height: 100dvh;  /* Ensure the height fills the viewport */
+  display: flex;
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: x mandatory;
   position: relative;
-  overflow-y: scroll;
-  background-color: red;
+  overflow-x: scroll;
 
   & img {
-    width: 100%;
+    min-width: 100%;
     height: 100dvh;
+    opacity: 1;
+    transition: opacity 0.5s ease;
     object-fit: cover;
     scroll-snap-align: center;
   }
 `;
 
+const SlideArrow = styled.div`
+  display: flex;
+  gap: 0px;
+  position: absolute;
+  width: 95%;
+  height: fit-content;
+  bottom: 20px;
+  left: 0px;
+  justify-content: flex-end;
 
-const SlideBackground = styled.div`
-  background-image: url(${(props) => props.image});
-  background-size: cover;
-  background-position: center;
-  width: 100%;
-  height: 100dvh;
-  filter: grayscale(1);
+  span::before {
+    content: ">>>";
+    font-size: 40px;
+  }
+
+  & span {
+    color: white;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
 `;

@@ -16,7 +16,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="flex w-[60%] justify-between mt-8  mx-auto z-10 overflow-clip fixed p-2 bg-white/30 backdrop-blur-lg rounded-lg inset-x-0">
+      <div className="flex w-[60%] justify-between mt-8  mx-auto z-10 overflow-clip fixed p-2 bg-white/5 backdrop-blur-lg rounded-lg inset-x-0">
         <div className="flex flex-col ">
           <Link to="/">
             <p className="text-2xl text-green-950 font-bold shadow-2xl text-shadow-black">
