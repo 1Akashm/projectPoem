@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "./Button";
@@ -33,4 +32,5 @@ const Parallex = styled.div`
   display: flex;
   justify-content: center;
   align-items: center; /* Optional: Aligns "Hi" to the center of the container */
+  scroll-snap-align: start;
 `;
