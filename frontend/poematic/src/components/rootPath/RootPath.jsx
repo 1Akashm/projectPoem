@@ -37,6 +37,7 @@ const RootPage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   scroll-snap-align: start;
 `;
 

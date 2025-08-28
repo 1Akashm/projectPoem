@@ -43,7 +43,7 @@ const signUpUser = async (req, res) => {
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
     });
 
-    generateTokenAndSetCookie(res, newUser._id);
+    generateTokenAndSetCookie(res, newUser._id); //_id is generated automatically when creating table by mongoose
 
     await sendVerificationEmail(newUser.name, newUser.email, verificationToken);
 
