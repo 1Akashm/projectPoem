@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+html{
+  scroll-behavior: smooth;
+}
+
+@font-face {
+  font-family: "circular";
+  src: url("/public/fonts/circularweb-book.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "general";
+  src: url("/public/fonts/general.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "robert";
+  src: url("/public/fonts/robert-medium.woff2") format("woff2"),
+    url("/public/fonts/robert-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "zentry";
+  src: url("/public/fonts/zentry-regular.woff2") format("woff2");
+}
+
+@theme {
+  /* colors */
+  --color-primary: #cc8c62;
+  --color-secondary: #dfd2d1;
+  --color-blue-50: #dfdff0;
+  --color-blue-75: #dfdff2;
+  --color-blue-100: #f0f2fa;
+  --color-blue-200: #010101;
+  --color-blue-300: #4fb7dd;
+
+  --color-violet-300: #5724ff;
+
+  --color-yellow-100: #8e983f;
+  --color-yellow-300: #edff66;
+
+  /* fonts */
+  --font-circular: "circular";
+  --font-zentry: "zentry";
+  --font-general: "general";
+  --font-robert: "robert";
+}
+
+body {
+  width: 100dvw;
+  height: 100dvh;
+  overflow-x: clip;
+  /* background-color: black; */
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* clip-path: polygon(27% 0, 75% 0, 100% 100%, 0 100%); */
+
+.mask-clip-path {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.three-dot {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: spin 4s linear infinite;
+}
+
+.three-dot-color {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgb(134, 3, 134);
+  transform-origin: 40px 40px; /* center of parent */
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Position each dot evenly around the circle */
+.three-dot-color:nth-child(1) {
+  width: 12px;
+  height: 12px;
+  transform: rotate(0deg) translateX(30px);
+  animation-delay: 0s;
+}
+.three-dot-color:nth-child(2) {
+  width: 10px;
+  height: 10px;
+  transform: rotate(120deg) translateX(30px);
+  animation-delay: 0.4s;
+}
+.three-dot-color:nth-child(3) {
+  width: 15px;
+  height: 15px;
+  transform: rotate(240deg) translateX(30px);
+  animation-delay: 0.8s;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.3);
+  }
+}
